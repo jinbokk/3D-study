@@ -1,0 +1,25 @@
+html,
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+canvas {
+  /* background-color: black; */
+  /* filter: blur(10px) contrast(10); */
+  filter:url("#gooey")
+}
+
+#indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
+  background-color: white;
+  padding: 10px;
+}
