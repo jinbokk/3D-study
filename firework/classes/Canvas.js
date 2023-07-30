@@ -1,6 +1,6 @@
-import { Particle } from "./Particle.js";
+import Particle from "./Particle.js";
+import Tail from "./Tail.js";
 import { randomNumBetween, hypotenuse } from "../utils.js";
-
 export class CanvasOption {
   constructor() {
     this.canvas = document.querySelector("canvas");
@@ -15,25 +15,37 @@ export class CanvasOption {
 export class Canvas extends CanvasOption {
   constructor() {
     super();
+    this.tails = [];
+    this.createTails();
     this.particles = [];
     this.createParticles();
   }
 
-  createParticles() {
-    const particleNum = 400;
-    const x = randomNumBetween(0, this.canvasWidth);
-    const y = randomNumBetween(0, this.canvasHeight);
+  createParticles(x, y, color) {
+    const particleNum = 330;
     for (let i = 0; i < particleNum; i++) {
       const r =
         randomNumBetween(1, 10) *
         hypotenuse(window.innerWidth, window.innerHeight) *
-        0.001;
+        0.0001;
       const degree = (Math.PI / 180) * randomNumBetween(0, 360);
 
       const vx = r * Math.cos(degree);
       const vy = r * Math.sin(degree);
-      this.particles.push(new Particle(x, y, vx, vy));
+      this.particles.push(new Particle(x, y, vx, vy, color));
     }
+  }
+
+  createTails() {
+    const x = randomNumBetween(this.canvasWidth * 0.1, this.canvasWidth * 0.85);
+    const y = this.canvasHeight;
+    const vy = randomNumBetween(0.4, 0.9);
+    const color = `${randomNumBetween(50, 255)}, ${randomNumBetween(
+      50,
+      255
+    )}, ${randomNumBetween(50, 255)}`;
+
+    this.tails.push(new Tail(x, y, vy, color));
   }
 
   init() {
@@ -56,8 +68,20 @@ export class Canvas extends CanvasOption {
 
       // this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 
-      this.ctx.fillStyle = this.bgColor + "50";
+      this.ctx.fillStyle = this.bgColor + "30";
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+      if (Math.random() < 0.03) this.createTails();
+
+      this.tails.forEach((tail, index) => {
+        tail.draw(this.ctx);
+        tail.update(deltaTime);
+
+        if (tail.vy < 0.08) {
+          this.tails.splice(index, 1);
+          this.createParticles(tail.x, tail.y, tail.color);
+        }
+      });
 
       this.particles.forEach((particle, index) => {
         particle.draw(this.ctx);
