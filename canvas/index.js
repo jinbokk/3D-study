@@ -9,8 +9,8 @@ let total;
 let particles;
 
 function init() {
-  canvasWidth = innerWidth;
-  canvasHeight = innerHeight;
+  canvasWidth = window.innerWidth;
+  canvasHeight = window.innerHeight;
   total = canvasWidth / 20;
 
   canvas.style.width = canvasWidth + "px";
