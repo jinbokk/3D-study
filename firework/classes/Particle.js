@@ -1,5 +1,4 @@
 import CanvasOption from "./CanvasOption.js";
-import { randomNumBetween } from "../utils.js";
 
 export default class Particle extends CanvasOption {
   constructor(x, y, vx, vy, color) {
@@ -8,7 +7,7 @@ export default class Particle extends CanvasOption {
     this.y = y;
     this.vx = vx;
     this.vy = vy;
-    this.opacity = randomNumBetween(0.8, 1);
+    this.opacity = 1;
     this.gravity = 0.02;
     this.friction = 0.93;
     this.color = color;

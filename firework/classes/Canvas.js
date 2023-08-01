@@ -13,10 +13,10 @@ export default class Canvas extends CanvasOption {
   }
 
   createParticles(x, y, color) {
-    const particleNum = 330;
+    const particleNum = 500;
     for (let i = 0; i < particleNum; i++) {
       const r =
-        randomNumBetween(1, 10) *
+        randomNumBetween(1, 9) *
         hypotenuse(window.innerWidth, window.innerHeight) *
         0.0001;
       const degree = (Math.PI / 180) * randomNumBetween(0, 360);
@@ -27,17 +27,20 @@ export default class Canvas extends CanvasOption {
   }
 
   createTails() {
+    const x = randomNumBetween(this.canvasWidth * 0.1, this.canvasWidth * 0.85);
+    const y = this.canvasHeight;
+    const vy = randomNumBetween(0.4, 0.9);
     const color = `${randomNumBetween(50, 255)}, ${randomNumBetween(
       50,
       255
     )}, ${randomNumBetween(50, 255)}`;
 
-    this.tails.push(new Tail(color));
+    this.tails.push(new Tail(x, y, vy, color));
   }
 
   init() {
-    this.canvasWidth = innerWidth;
-    this.canvasHeight = innerHeight;
+    this.canvasWidth = window.innerWidth;
+    this.canvasHeight = window.innerHeight;
 
     this.canvas.width = this.canvasWidth * this.dpr;
     this.canvas.height = this.canvasHeight * this.dpr;
@@ -57,14 +60,14 @@ export default class Canvas extends CanvasOption {
       previousTime = currentTime;
 
       // this.ctx.fillStyle = this.bgColor;
-      
+
       // an afterimage(Image burn-in) remains
-      this.ctx.fillStyle = this.bgColor + 40;
+      this.ctx.fillStyle = this.bgColor + 30;
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
       // tree grow effect idea...?
       this.ctx.fillStyle = `rgba(255, 255, 255, ${
-        this.particles.length / 90000
+        this.particles.length / 80000
       })`;
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
