@@ -45,9 +45,10 @@ function render() {
     for (let i = particles.length - 1; i >= 0; i--) {
       particles[i].update(deltaTime);
       particles[i].draw(ctx);
-    }
 
-    if (particles.opacity < 0) particles.splice(i, 0);
+      if (particles[i].opacity < 0) particles.splice(i, 1);
+      if (particles[i].y > canvasHeight) particles.splice(i, 1);
+    }
   }
 
   window.requestAnimationFrame(frame);
