@@ -1,5 +1,5 @@
 import CanvasOption from "./CanvasOption.js";
-import { randomNumBetween, hypotenuse } from "../../CountDown/utils.js";
+import { randomNumBetween, hypotenuse } from "../utils.js";
 import Particle from "./Particle.js";
 import Tail from "./Tail.js";
 import Spark from "./Spark.js";
