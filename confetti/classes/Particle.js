@@ -1,23 +1,23 @@
 import { hexToRgb, randomNumBetween } from "../utils.js";
 
 export default class Particle {
-  constructor(x, y, deg = -50, colors) {
+  constructor(x, y, deg = -50, colors, shapes, spread, mode) {
     this.x = x;
     this.y = y;
 
-    this.particleWidth = 12;
+    this.particleWidth = mode === "parade" ? 12 : 7;
     this.particleWidthDelta = randomNumBetween(0, 360);
-    this.particleHeight = 12;
+    this.particleHeight = mode === "parade" ? 12 : 7;
     this.particleHeightDelta = randomNumBetween(0, 360);
 
-    this.angle = (Math.PI / 180) * randomNumBetween(deg - 30, deg + 30);
+    this.angle = (Math.PI / 180) * randomNumBetween(deg - spread, deg + spread);
     this.radius = randomNumBetween(0.5, 5);
 
     this.vx = this.radius * Math.cos(this.angle);
     this.vy = this.radius * Math.sin(this.angle);
 
-    this.friction = 0.88;
-    this.gravity = 0.1;
+    this.friction = mode === "parade" ? 0.88 : 0.86;
+    this.gravity = mode === "parade" ? 0.1 : 0.02;
     this.opacity = 1;
 
     this.particleRotation = randomNumBetween(0, 360);
@@ -25,8 +25,47 @@ export default class Particle {
 
     this.colors = colors || ["#FF577F", "#FF884B", "#FFD384", "#FFF9B0"];
     this.color = hexToRgb(
-      this.colors[Math.floor(randomNumBetween(0, this.colors.length - 1))]
+      this.colors[Math.floor(randomNumBetween(0, this.colors.length))]
     );
+
+    this.shapes = shapes || ["square"];
+
+    this.shape =
+      this.shapes[Math.floor(randomNumBetween(0, this.shapes.length))];
+
+    this.mode = mode;
+  }
+
+  drawSquare(ctx) {
+    ctx.fillRect(
+      this.x,
+      this.y,
+      this.particleWidth * Math.cos((Math.PI / 180) * this.particleWidthDelta),
+      this.particleHeight * Math.sin((Math.PI / 180) * this.particleHeightDelta)
+    );
+  }
+
+  drawCircle(ctx) {
+    ctx.beginPath();
+    ctx.ellipse(
+      this.x,
+      this.y,
+      Math.abs(
+        this.particleWidth *
+          Math.cos((Math.PI / 180) * this.particleWidthDelta) *
+          0.8
+      ),
+      Math.abs(
+        this.particleHeight *
+          Math.sin((Math.PI / 180) * this.particleHeightDelta) *
+          0.8
+      ),
+      0,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+    ctx.closePath();
   }
 
   draw(ctx) {
@@ -41,12 +80,15 @@ export default class Particle {
     );
 
     ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`;
-    ctx.fillRect(
-      this.x,
-      this.y,
-      this.particleWidth * Math.cos((Math.PI / 180) * this.particleWidthDelta),
-      this.particleHeight * Math.sin((Math.PI / 180) * this.particleHeightDelta)
-    );
+
+    switch (this.shape) {
+      case "square":
+        this.drawSquare(ctx);
+        break;
+      case "circle":
+        this.drawCircle(ctx);
+        break;
+    }
 
     ctx.resetTransform();
   }

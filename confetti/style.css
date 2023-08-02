@@ -5,7 +5,57 @@ body {
   margin: 0;
   overflow: hidden;
   background-color: black;
-  /* display: flex;
+}
+
+#mode {
+  width: 100%;
+  display: flex;
   justify-content: center;
-  align-items: center; */
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  position: fixed;
+  bottom: 10%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#mode > div {
+  margin: 0 0.7rem;
+  padding: 0.7rem;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 1rem;
+  transition: 0.3s;
+  text-align: center;
+}
+
+#mode > div:hover {
+  background-color: white;
+  color: black;
+  transition: 0.3s;
+}
+
+.instruction {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem;
+  color: white;
+  opacity: 0.2;
+  user-select: none;
+}
+
+.playType {
+  color: white;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.4rem;
 }
