@@ -2,8 +2,8 @@ import { hexToRgb, randomNumBetween } from "../utils.js";
 
 export default class Particle {
   constructor(x, y, deg = -50, colors, shapes, spread, mode) {
-    this.x = x;
-    this.y = y;
+    this.x = window.innerWidth * x;
+    this.y = window.innerHeight * y;
 
     this.particleWidth = mode === "parade" ? 12 : 7;
     this.particleWidthDelta = randomNumBetween(0, 360);
@@ -108,5 +108,14 @@ export default class Particle {
     this.particleRotation += this.particleRotationDelta * deltaTime;
 
     this.opacity -= 0.001 * deltaTime;
+
+    if (
+      this.x < 0 ||
+      this.x > window.innerWidth ||
+      this.y < 0 ||
+      this.y > window.innerHeight
+    ) {
+      this.opacity = 0; // 입자의 투명도를 0으로 설정하여 보이지 않게 합니다.
+    }
   }
 }

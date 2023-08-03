@@ -3,8 +3,8 @@ import Particle from "./classes/Particle.js";
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 const dpr = window.devicePixelRatio > 1 ? 2 : 1;
-
-let canvasWidth, canvasHeight;
+let canvasWidth = window.innerWidth;
+let canvasHeight = window.innerHeight;
 
 const particles = [];
 let particlesNum;
@@ -27,19 +27,16 @@ function init() {
   canvasWidth = window.innerWidth;
   canvasHeight = window.innerHeight;
 
-  canvas.style.width = canvasWidth + "px";
-  canvas.style.height = canvasHeight + "px";
-
   canvas.width = canvasWidth * dpr;
   canvas.height = canvasHeight * dpr;
 
   ctx.scale(dpr, dpr);
+
+  canvas.style.width = canvasWidth + "px";
+  canvas.style.height = canvasHeight + "px";
 }
 
 function createConfetti({ x, y, deg, colors, shapes, spread }) {
-  x = x * innerWidth;
-  y = y * innerHeight;
-
   for (let i = 0; i < particlesNum; i++) {
     particles.push(new Particle(x, y, deg, colors, shapes, spread, mode));
   }

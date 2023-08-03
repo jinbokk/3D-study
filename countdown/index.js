@@ -19,7 +19,7 @@ function init() {
 }
 
 function createRing() {
-  let particleNum = 2000;
+  let particleNum = 1000;
 
   for (let i = 0; i < particleNum; i++) {
     particles.push(new Particle());
