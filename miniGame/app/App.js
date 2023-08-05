@@ -1,4 +1,5 @@
 import Background from "./classes/Background.js";
+import Player from "./classes/Player.js";
 import Wall from "./classes/Wall.js";
 
 export default class App {
@@ -17,6 +18,8 @@ export default class App {
     ];
 
     this.walls = [new Wall({ type: "SMALL" })];
+
+    this.player = new Player();
 
     window.addEventListener("resize", this.resize.bind(this));
   }
@@ -63,23 +66,26 @@ export default class App {
           continue;
         }
 
-        //Generate Wall
+        // Generate Wall
         if (this.walls[i].canGenerateNext) {
           this.walls[i].generatedNext = true;
           this.walls.push(
             new Wall({ type: Math.random() > 0.3 ? "SMALL" : "BIG" })
           );
         }
+
+        if (this.walls[i].isColliding(this.player.boundingBox)) {
+          // console.log("Colliding !");
+          this.player.boundingBox.color = `rgba(255, 0, 0, 0.3)`
+        } else {
+          this.player.boundingBox.color = `rgba(0, 0, 255, 0.3)`
+
+        }
       }
 
-      // this.walls.forEach((wall) => {
-      //   wall.draw();
-      //   wall.update();
-
-      //   console.log(wall.isOutside);
-
-      //   if (wall.isOutside) this.walls.splice(i, 1);
-      // });
+      // Player
+      this.player.update();
+      this.player.draw();
 
       previous = current - (delta % App.interval);
     };
