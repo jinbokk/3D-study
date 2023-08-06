@@ -1,6 +1,8 @@
 import Background from "./classes/Background.js";
 import Coin from "./classes/Coin.js";
+import GameHandler from "./classes/GameHandler.js";
 import Player from "./classes/Player.js";
+import Score from "./classes/Score.js";
 import Wall from "./classes/Wall.js";
 
 export default class App {
@@ -18,26 +20,26 @@ export default class App {
       new Background({ img: document.querySelector("#bg1-img"), speed: -4 }),
     ];
 
-    this.walls = [new Wall({ type: "SMALL" })];
-
-    this.player = new Player();
-
-    this.coins = [];
-
-    window.addEventListener("resize", this.resize.bind(this));
+    this.gameHandler = new GameHandler(this);
+    this.reset();
   }
 
-  resize() {
+  reset() {
+    this.walls = [new Wall({ type: "SMALL" })];
+    this.player = new Player();
+    this.coins = [];
+    this.score = new Score();
+  }
+
+  init() {
     App.canvas.width = App.width * App.dpr;
     App.canvas.height = App.height * App.dpr;
     App.ctx.scale(App.dpr, App.dpr);
 
-    const width =
-      window.innerWidth > window.innerHeight
-        ? window.innerHeight * 0.9
-        : window.innerWidth * 0.9;
-    App.canvas.style.width = width + "px";
-    App.canvas.style.height = width * (3 / 4) + "px";
+    // Background Image Init
+    this.backgrounds.forEach((background) => {
+      background.draw();
+    });
   }
 
   render() {
@@ -46,16 +48,19 @@ export default class App {
 
     const frame = (current) => {
       requestAnimationFrame(frame);
-      App.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
       delta = current - previous;
 
       if (delta < App.interval) return;
 
+      if (this.gameHandler._status !== "PLAYING") return;
+
+      App.ctx.clearRect(0, 0, App.width, App.height);
+
       // Background Image
       this.backgrounds.forEach((background) => {
-        background.draw();
         background.update();
+        background.draw();
       });
 
       // Wall image
@@ -103,11 +108,21 @@ export default class App {
           }
         }
 
+        // if (this.walls[i].isCollidingWith(this.player.boundingBox)) {
+        //   this.player.boundingBox.color = `rgba(255, 0, 0, 0.3)`;
+        // } else {
+        //   this.player.boundingBox.color = `rgba(0, 0, 255, 0.3)`;
+        // }
+
         if (this.walls[i].isCollidingWith(this.player.boundingBox)) {
-          // console.log("Colliding !");
-          this.player.boundingBox.color = `rgba(255, 0, 0, 0.3)`;
-        } else {
-          this.player.boundingBox.color = `rgba(0, 0, 255, 0.3)`;
+          document.querySelector(".distance").innerHTML =
+            Math.floor(this.score.distCount) + "m";
+          document.querySelector(".coin").innerHTML =
+            this.score.coinCount + "coin";
+          this.gameHandler.status = "FINISHED";
+
+          // prevent side-effect in for-loop
+          break;
         }
       }
 
@@ -115,6 +130,12 @@ export default class App {
       this.player.update();
       this.player.draw();
 
+      if (
+        this.player.y > App.height ||
+        this.player.y + this.player.height < 0
+      ) {
+        this.gameHandler.status = "FINISHED";
+      }
       // Coin
       for (let i = this.coins.length - 1; i >= 0; i--) {
         this.coins[i].update();
@@ -128,10 +149,13 @@ export default class App {
         if (
           this.coins[i].boundingBox.isCollidingWith(this.player.boundingBox)
         ) {
-          // console.log("Getcha!");
+          this.score.coinCount += 1;
           this.coins.splice(i, 1);
         }
       }
+
+      this.score.update();
+      this.score.draw();
 
       previous = current - (delta % App.interval);
     };

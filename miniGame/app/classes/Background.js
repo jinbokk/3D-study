@@ -5,7 +5,6 @@ export default class Background {
     this.img = config.img;
     this.speed = config.speed;
     this.height = App.height;
-    // this.width = App.width;
     this.width = App.height * (this.img.width / this.img.height);
     // TileMap
     this.leftPos = { x: 0, y: 0 };

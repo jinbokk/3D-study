@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mini Game</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
+      integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
   </head>
   <body>
     <img
@@ -43,7 +55,29 @@
       class="asset-img"
       id="coin-img"
     />
-    <canvas></canvas>
+    <main>
+      <section class="ready-screen">
+        <img
+          src="./assets/FastCampus/startScreen_logo_2.png"
+          alt=""
+          class="start-bg"
+          draggable="false"
+        />
+        <img
+          src="./assets/FastCampus/startScreen_play_button.png"
+          alt=""
+          class="start-btn"
+          draggable="false"
+        />
+      </section>
+
+      <section class="finish-screen">
+        <div class="distance">0m</div>
+        <div class="coin">0 coin</div>
+        <img src="./assets/FastCampus/replay.svg" alt="" class="replay-btn" />
+      </section>
+      <canvas></canvas>
+    </main>
     <script type="module" src="./index.js"></script>
   </body>
 </html>
