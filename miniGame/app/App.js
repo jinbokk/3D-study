@@ -1,4 +1,5 @@
 import Background from "./classes/Background.js";
+import Coin from "./classes/Coin.js";
 import Player from "./classes/Player.js";
 import Wall from "./classes/Wall.js";
 
@@ -20,6 +21,8 @@ export default class App {
     this.walls = [new Wall({ type: "SMALL" })];
 
     this.player = new Player();
+
+    this.coins = [];
 
     window.addEventListener("resize", this.resize.bind(this));
   }
@@ -70,22 +73,65 @@ export default class App {
         if (this.walls[i].canGenerateNext) {
           this.walls[i].generatedNext = true;
           this.walls.push(
-            new Wall({ type: Math.random() > 0.3 ? "SMALL" : "BIG" })
+            new Wall({ type: Math.random() > 0.5 ? "SMALL" : "BIG" })
           );
+
+          // Generate Coins
+          if (Math.random() < 0.8) {
+            const x = this.walls[i + 1].x + this.walls[i + 1].width / 2;
+            const y = this.walls[i + 1].y2 - this.walls[i + 1].gapY / 2;
+            const vx = this.walls[i + 1].vx;
+            const xOffset = 10;
+
+            if (this.walls[i + 1].type === "SMALL") {
+              this.coins.push(
+                new Coin(x - 55 + xOffset, y, vx),
+                new Coin(x + xOffset, y, vx),
+                new Coin(x + 55 + xOffset, y, vx)
+              );
+            }
+
+            if (this.walls[i + 1].type === "BIG") {
+              this.coins.push(
+                new Coin(x - 150 + xOffset, y, vx),
+                new Coin(x - 75 + xOffset, y, vx),
+                new Coin(x + xOffset, y, vx),
+                new Coin(x + 75 + xOffset, y, vx),
+                new Coin(x + 150 + xOffset, y, vx)
+              );
+            }
+          }
         }
 
-        if (this.walls[i].isColliding(this.player.boundingBox)) {
+        if (this.walls[i].isCollidingWith(this.player.boundingBox)) {
           // console.log("Colliding !");
-          this.player.boundingBox.color = `rgba(255, 0, 0, 0.3)`
+          this.player.boundingBox.color = `rgba(255, 0, 0, 0.3)`;
         } else {
-          this.player.boundingBox.color = `rgba(0, 0, 255, 0.3)`
-
+          this.player.boundingBox.color = `rgba(0, 0, 255, 0.3)`;
         }
       }
 
       // Player
       this.player.update();
       this.player.draw();
+
+      // Coin
+      for (let i = this.coins.length - 1; i >= 0; i--) {
+        this.coins[i].update();
+        this.coins[i].draw();
+
+        if (this.coins[i].x + this.coins[i].width < 0) {
+          this.coins.splice(i, 1);
+          continue;
+        }
+
+        if (
+          this.coins[i].boundingBox.isCollidingWith(this.player.boundingBox)
+        ) {
+          console.log("Getcha!");
+          this.coins.splice(i, 1);
+        }
+      }
 
       previous = current - (delta % App.interval);
     };

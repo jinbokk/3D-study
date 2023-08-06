@@ -9,7 +9,7 @@ export default class BoundingBox {
     this.color = `rgba(255, 0, 0, 0.3)`;
   }
 
-  isColliding(target) {
+  isCollidingWith(target) {
     return (
       target.x + target.width >= this.x &&
       target.x <= this.x + this.width &&

@@ -22,7 +22,7 @@ export default class Wall {
     this.height = App.height;
     this.gapY = randomNumBetween(App.height * 0.15, App.height * 0.35);
     this.x = App.width;
-    this.speed = -5;
+    this.vx = -5;
     this.y1 = -this.height + randomNumBetween(40, App.height - this.gapY - 40);
     this.y2 = this.y1 + this.height + this.gapY;
 
@@ -30,17 +30,17 @@ export default class Wall {
     this.gapNextX = App.width * randomNumBetween(0.7, 0.85);
 
     this.boundingBoxTop = new BoundingBox(
-      this.x - 30,
-      this.y1 - 50,
+      this.x + 30,
+      this.y1 + 30,
       this.width - 60,
-      this.height
+      this.height - 60
     );
 
     this.boundingBoxBottom = new BoundingBox(
-      this.x - 30,
-      this.y2 + 50,
+      this.x + 30,
+      this.y2 + 30,
       this.width - 60,
-      this.height
+      this.height - 60
     );
   }
 
@@ -53,16 +53,16 @@ export default class Wall {
   }
 
   update() {
-    this.x += this.speed;
+    this.x += this.vx;
 
-    this.boundingBoxTop.x = this.x;
-    this.boundingBoxBottom.x = this.x;
+    this.boundingBoxTop.x = this.x + 30;
+    this.boundingBoxBottom.x = this.x + 30;
   }
 
-  isColliding(target) {
+  isCollidingWith(target) {
     return (
-      this.boundingBoxTop.isColliding(target) ||
-      this.boundingBoxBottom.isColliding(target)
+      this.boundingBoxTop.isCollidingWith(target) ||
+      this.boundingBoxBottom.isCollidingWith(target)
     );
   }
 
@@ -70,10 +70,10 @@ export default class Wall {
     App.ctx.drawImage(
       this.img,
       this.sx,
-      10, // margin
+      0,
       this.img.width * this.sizeX,
       this.img.height,
-      this.x - 30,
+      this.x,
       this.y1,
       this.width,
       this.height
@@ -82,10 +82,10 @@ export default class Wall {
     App.ctx.drawImage(
       this.img,
       this.sx,
-      -10, // margin
+      0,
       this.img.width * this.sizeX,
       this.img.height,
-      this.x - 30,
+      this.x,
       this.y2,
       this.width,
       this.height
