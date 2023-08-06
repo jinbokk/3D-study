@@ -35,7 +35,7 @@ export default class Coin {
     this.sx = (this.img.width / 10) * this.frameX;
 
     this.boundingBox;
-    this.boundingBox.draw();
+    // this.boundingBox.draw();
 
     App.ctx.drawImage(
       this.img,

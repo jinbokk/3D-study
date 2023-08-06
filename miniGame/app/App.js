@@ -128,7 +128,7 @@ export default class App {
         if (
           this.coins[i].boundingBox.isCollidingWith(this.player.boundingBox)
         ) {
-          console.log("Getcha!");
+          // console.log("Getcha!");
           this.coins.splice(i, 1);
         }
       }
