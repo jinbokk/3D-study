@@ -8,3 +8,24 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+body {
+  background-color: #1f1f1f;
+}
+
+.asset-img {
+  display: none;
+}
+
+.joke {
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  width: 100vw;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  /* font-size: clamp(min, prefered, max); */
+  font-size: clamp(15px, 2vw, 30px);
+  color: white;
+  opacity: 0.1;
+}

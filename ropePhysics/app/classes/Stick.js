@@ -17,7 +17,7 @@ export default class Stick {
     // const offsetX = ((dist - this.length) * dx) / dist;
     // const offsetY = ((dist - this.length) * dy) / dist;
 
-    // operation optimization
+    //? operation optimization
     const diff = (dist - this.length) / dist;
     const offsetX = diff * dx * this.tension;
     const offsetY = diff * dy * this.tension;
@@ -39,7 +39,7 @@ export default class Stick {
   draw(ctx) {
     ctx.beginPath();
     ctx.strokeStyle = "#999";
-    ctx.lineWidth = 10;
+    ctx.lineWidth = 1;
     ctx.moveTo(this.startPoint.pos.x, this.startPoint.pos.y);
     ctx.lineTo(this.endPoint.pos.x, this.endPoint.pos.y);
     ctx.stroke();

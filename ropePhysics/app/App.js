@@ -1,6 +1,6 @@
-import Dot from "./classes/Dot.js";
 import Mouse from "./classes/Mouse.js";
-import Stick from "./classes/Stick.js";
+import Rope from "./classes/Rope.js";
+import { randomNumBetween } from "./util.js";
 
 export default class App {
   static width = window.innerWidth;
@@ -15,22 +15,6 @@ export default class App {
     this.resize();
     window.addEventListener("resize", this.resize.bind(this));
 
-    this.dots = [
-      new Dot(400, 50),
-      new Dot(500, 100),
-      new Dot(600, 50),
-      new Dot(800, 0),
-    ];
-    this.sticks = [
-      new Stick(this.dots[0], this.dots[1]),
-      new Stick(this.dots[1], this.dots[2]),
-      new Stick(this.dots[2], this.dots[3]),
-    ];
-
-    this.dots[0].pinned = true;
-
-    this.dots[1].mass = 1;
-
     this.mouse = new Mouse(this.canvas);
   }
 
@@ -44,6 +28,23 @@ export default class App {
     this.canvas.width = App.width * App.dpr;
     this.canvas.height = App.height * App.dpr;
     this.ctx.scale(App.dpr, App.dpr);
+
+    this.initRopes();
+  }
+
+  initRopes() {
+    this.ropes = [];
+    const TOTAL = App.width * 0.06;
+
+    for (let i = 0; i < TOTAL; i++) {
+      const rope = new Rope({
+        x: randomNumBetween(App.width * 0.3, App.width * 0.7),
+        y: 0,
+        gap: randomNumBetween(App.height * 0.05, App.height * 0.08),
+      });
+      rope.pin(0);
+      this.ropes.push(rope);
+    }
   }
 
   render() {
@@ -58,25 +59,12 @@ export default class App {
 
       this.ctx.clearRect(0, 0, App.width, App.height);
 
-      this.dots.forEach((dot) => {
-        dot.update(this.mouse);
-      });
-
-      // Preventing the transition of the state before the update to the next frame.
-      for (let i = 0; i < 10; i++) {
-        this.sticks.forEach((stick) => {
-          stick.update();
-        });
-      }
-
-      this.dots.forEach((dot) => {
-        dot.draw(this.ctx);
-      });
-
-      this.sticks.forEach((stick) => {
-        stick.draw(this.ctx);
+      this.ropes.forEach((rope) => {
+        rope.update(this.mouse);
+        rope.draw(this.ctx);
       });
     };
+
     requestAnimationFrame(frame);
   }
 }

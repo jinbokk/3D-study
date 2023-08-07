@@ -4,7 +4,7 @@ export default class Vector {
     this.y = y || 0;
   }
 
-  // Vector.add()
+  //? Vector.add()
   static add(v1, v2) {
     return new Vector(v1.x + v2.x, v1.y + v2.y);
   }
@@ -13,35 +13,35 @@ export default class Vector {
     return new Vector(v1.x - v2.x, v1.y - v2.y);
   }
 
-  // let vector = new Vector()
-  // vector.add()
+  //? let vector = new Vector()
+  //? vector.add()
   add(x, y) {
     if (arguments.length === 1) {
-      // arguments > x
+      //? arguments > x
       this.x += x.x;
       this.y += x.y;
     } else if (arguments.length === 2) {
-      // arguments > x and y
+      //? arguments > x and y
       this.x += x;
       this.y += y;
     }
 
-    // return modified Vector instance
+    //? return modified Vector instance
     return this;
   }
 
   sub(x, y) {
     if (arguments.length === 1) {
-      // arguments > x
+      //? arguments > x
       this.x -= x.x;
       this.y -= x.y;
     } else if (arguments.length === 2) {
-      // arguments > x and y
+      //? arguments > x and y
       this.x -= x;
       this.y -= y;
     }
 
-    // return modified Vector instance
+    //? return modified Vector instance
     return this;
   }
 
@@ -62,7 +62,7 @@ export default class Vector {
     return this;
   }
 
-  // Pythagoras' theorem
+  //? Pythagoras' theorem
   dist(v) {
     const dx = this.x - v.x;
     const dy = this.y - v.y;
