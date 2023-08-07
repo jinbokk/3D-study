@@ -1,3 +1,6 @@
+import Dot from "./classes/Dot.js";
+import Stick from "./classes/Stick.js";
+
 export default class App {
   static width = window.innerWidth;
   static height = window.innerHeight;
@@ -10,6 +13,22 @@ export default class App {
 
     this.resize();
     window.addEventListener("resize", this.resize.bind(this));
+
+    this.dots = [
+      new Dot(400, 50),
+      new Dot(500, 50),
+      new Dot(600, 50),
+      new Dot(700, 50),
+    ];
+    this.sticks = [
+      new Stick(this.dots[0], this.dots[1]),
+      new Stick(this.dots[1], this.dots[2]),
+      new Stick(this.dots[2], this.dots[3]),
+    ];
+
+    this.dots[0].pinned = true;
+
+    this.dots[1].mass = 50;
   }
 
   resize() {
@@ -35,7 +54,16 @@ export default class App {
       prev = current - (delta % this.interval);
 
       this.ctx.clearRect(0, 0, App.width, App.height);
-      this.ctx.fillRect(100, 100, 100, 100);
+
+      this.dots.forEach((dot) => {
+        dot.update();
+        dot.draw(this.ctx);
+      });
+
+      this.sticks.forEach((stick) => {
+        stick.update();
+        stick.draw(this.ctx);
+      });
     };
     requestAnimationFrame(frame);
   }

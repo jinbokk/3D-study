@@ -135,6 +135,7 @@ export default class App {
         this.player.y + this.player.height < 0
       ) {
         this.gameHandler.status = "FINISHED";
+        this.reset();
       }
       // Coin
       for (let i = this.coins.length - 1; i >= 0; i--) {
