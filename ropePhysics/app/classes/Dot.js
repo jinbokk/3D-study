@@ -13,7 +13,7 @@ export default class Dot {
     this.mass = 1;
   }
 
-  update() {
+  update(mouse) {
     if (this.pinned) return;
 
     //? velocity
@@ -23,7 +23,19 @@ export default class Dot {
 
     vel.multi(this.friction);
     vel.add(this.gravity);
-    this.pos.add(vel);
+
+    let { x: dx, y: dy } = Vector.sub(mouse.pos, this.pos);
+    const dist = Math.sqrt(dx * dx, dy * dy);
+
+    const direction = new Vector(dx / dist, dy / dist);
+
+    const force = Math.max((mouse.radius - dist) / mouse.radius, 0);
+
+    if (force > 0.6) this.pos.setXY(mouse.pos.x, mouse.pos.y);
+    else {
+      this.pos.add(vel);
+      this.pos.add(direction.multi(force).multi(2));
+    }
   }
 
   draw(ctx) {

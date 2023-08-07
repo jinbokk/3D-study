@@ -1,4 +1,5 @@
 import Dot from "./classes/Dot.js";
+import Mouse from "./classes/Mouse.js";
 import Stick from "./classes/Stick.js";
 
 export default class App {
@@ -16,9 +17,9 @@ export default class App {
 
     this.dots = [
       new Dot(400, 50),
-      new Dot(500, 50),
+      new Dot(500, 100),
       new Dot(600, 50),
-      new Dot(700, 50),
+      new Dot(800, 0),
     ];
     this.sticks = [
       new Stick(this.dots[0], this.dots[1]),
@@ -28,7 +29,9 @@ export default class App {
 
     this.dots[0].pinned = true;
 
-    this.dots[1].mass = 50;
+    this.dots[1].mass = 1;
+
+    this.mouse = new Mouse(this.canvas);
   }
 
   resize() {
@@ -56,12 +59,21 @@ export default class App {
       this.ctx.clearRect(0, 0, App.width, App.height);
 
       this.dots.forEach((dot) => {
-        dot.update();
+        dot.update(this.mouse);
+      });
+
+      // Preventing the transition of the state before the update to the next frame.
+      for (let i = 0; i < 10; i++) {
+        this.sticks.forEach((stick) => {
+          stick.update();
+        });
+      }
+
+      this.dots.forEach((dot) => {
         dot.draw(this.ctx);
       });
 
       this.sticks.forEach((stick) => {
-        stick.update();
         stick.draw(this.ctx);
       });
     };

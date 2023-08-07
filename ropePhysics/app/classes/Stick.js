@@ -17,7 +17,7 @@ export default class Stick {
     // const offsetX = ((dist - this.length) * dx) / dist;
     // const offsetY = ((dist - this.length) * dy) / dist;
 
-    // operation optimiztion
+    // operation optimization
     const diff = (dist - this.length) / dist;
     const offsetX = diff * dx * this.tension;
     const offsetY = diff * dy * this.tension;
