@@ -1,5 +1,6 @@
 import ArrowImg from "./assets/arrow.svg";
 import Nudake from "./containers/Nudake";
+import RotateCanvas from "./containers/RotateCanvas";
 
 function App() {
   return (
@@ -7,7 +8,7 @@ function App() {
       <div className="app">
         <section className="section-1">
           <header>
-            <h1>React + Canvas Portfolio</h1>
+            <h1>2D Portfolio</h1>
             <ul>
               <li>instagram</li>
               <li>twitter</li>
@@ -45,23 +46,7 @@ function App() {
         </section>
 
         <section className="section-4">
-          <canvas></canvas>
-          <aside>
-            <h1>Javascript</h1>
-            <h2>⭐⭐⭐⭐⭐</h2>
-            <p>
-              It is a long established fact that a reader will be distracted by
-              the readable content of a page when looking at its layout. The
-              point of using Lorem Ipsum is that it has a more-or-less normal
-              distribution of letters, as opposed to using &apos;Content here,
-              content here&apos;, making it look like readable English. Many
-              desktop publishing packages and web page editors now use Lorem
-              Ipsum as their default model text, and a search for &apos;lorem
-              ipsum&apos; will uncover many web sites still in their infancy.
-              Various versions have evolved over the years, sometimes by
-              accident, sometimes on purpose (injected humour and the like).
-            </p>
-          </aside>
+          <RotateCanvas />
         </section>
       </div>
       <footer>

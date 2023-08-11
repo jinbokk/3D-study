@@ -3,7 +3,16 @@ import "../style/containers/Nudake.css";
 import image1 from "../assets/nudake-1.jpg";
 import image2 from "../assets/nudake-2.jpg";
 import image3 from "../assets/nudake-3.jpg";
-import { getAngle, getDistance } from "../utils/utils";
+import {
+  drawImageCenter,
+  getAngle,
+  getDistance,
+  getScrupedPercent,
+} from "../utils/utils";
+// eslint-disable-next-line no-unused-vars
+import lodash from "lodash/throttle";
+import throttle from "lodash/throttle";
+import { gsap } from "gsap";
 
 const Nudake = () => {
   const canvasRef = useRef(null);
@@ -14,9 +23,11 @@ const Nudake = () => {
     /** @type {CanvasRenderingContext2D} */
     const ctx = canvas.getContext("2d");
 
-    const imgSrcs = [image1, image2, image3];
+    const imageSrcs = [image1, image2, image3];
+    const loadedImages = [];
     let currentIndex = 0;
     let prevPos = { x: 0, y: 0 };
+    let isChanging = false;
 
     let canvasWidth, canvasHeight;
 
@@ -28,35 +39,68 @@ const Nudake = () => {
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
 
-      drawImage();
+      preloadImages().then(() => drawImage());
+    }
+
+    function preloadImages() {
+      // eslint-disable-next-line no-unused-vars
+      return new Promise((resolve, reject) => {
+        let loaded = 0;
+        imageSrcs.forEach((src) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = () => {
+            loaded += 1;
+            loadedImages.push(img);
+            if (loaded === imageSrcs.length) return resolve();
+          };
+        });
+      });
     }
 
     function drawImage() {
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-      const image = new Image();
-      image.src = imgSrcs[currentIndex];
-      image.onload = () => {
-        ctx.drawImage(image, 0, 0, canvasWidth, canvasHeight);
-      };
+      isChanging = true;
+
+      const image = loadedImages[currentIndex];
+      const firstDrawing = ctx.globalCompositeOperation === "source-over";
+
+      gsap.to(canvas, {
+        opacity: 0,
+        duration: firstDrawing ? 0 : 1,
+        onComplete: () => {
+          canvas.style.opacity = 1;
+          ctx.globalCompositeOperation = "source-over";
+          drawImageCenter(canvas, ctx, image);
+
+          const nextImage = imageSrcs[(currentIndex + 1) % imageSrcs.length];
+          canvasParent.style.backgroundImage = `url(${nextImage})`;
+
+          isChanging = false;
+        },
+      });
     }
 
     function onMouseDown(e) {
-      console.log("down");
+      if (isChanging) return;
+
       canvas.addEventListener("mouseup", onMouseUp);
       canvas.addEventListener("mouseleave", onMouseUp);
       canvas.addEventListener("mousemove", onMouseMove);
 
       prevPos = { x: e.offsetX, y: e.offsetY };
     }
+
     function onMouseUp() {
-      console.log("up");
       canvas.removeEventListener("mouseup", onMouseUp);
       canvas.removeEventListener("mouseleave", onMouseUp);
       canvas.removeEventListener("mousemove", onMouseMove);
     }
+
     function onMouseMove(e) {
-      console.log("move");
+      if (isChanging) return;
+
       drawCircles(e);
+      checkPercent();
     }
 
     function drawCircles(e) {
@@ -70,13 +114,24 @@ const Nudake = () => {
 
         ctx.globalCompositeOperation = "destination-out";
         ctx.beginPath();
-        ctx.arc(x, y, 50, 0, Math.PI * 2);
+        ctx.arc(x, y, 150, 0, Math.PI * 2);
         ctx.fill();
         ctx.closePath();
       }
 
       prevPos = nextPos;
     }
+
+    const checkPercent = throttle(() => {
+      const percent = getScrupedPercent(ctx, canvasWidth, canvasHeight);
+      console.log(percent);
+
+      if (percent > 50) {
+        currentIndex = (currentIndex + 1) % imageSrcs.length;
+        drawImage();
+        onMouseUp();
+      }
+    }, 500);
 
     canvas.addEventListener("mousedown", onMouseDown);
     canvas.addEventListener("resize", resize);
@@ -85,7 +140,6 @@ const Nudake = () => {
 
     return () => {
       canvas.removeEventListener("mousedown", onMouseDown);
-
       canvas.removeEventListener("resize", resize);
       window.removeEventListener("resize");
     };
