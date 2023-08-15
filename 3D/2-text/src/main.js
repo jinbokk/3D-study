@@ -4,10 +4,10 @@ import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass.js";
-import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
-import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass";
+// import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass.js";
+// import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
+// import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass";
 
 import GUI from "lil-gui";
 
@@ -46,10 +46,10 @@ async function init() {
   const fontLoader = new FontLoader();
 
   const font = await fontLoader.loadAsync(
-    "./assets/fonts/Shadows Into Light_Regular.json"
+    "/assets/fonts/Shadows Into Light_Regular.json"
   );
 
-  // fontLoader.load("./assets/fonts/Kalam_Regular.json", (font) => {
+  // fontLoader.load("/assets/fonts/Kalam_Regular.json", (font) => {
   //   /** Text */
   //   const textGeometry = new TextGeometry("HELLO", {
   //     font: font,
@@ -95,7 +95,7 @@ async function init() {
   // );
 
   /** Texture */
-  const textureLoader = new THREE.TextureLoader().setPath("./assets/textures/");
+  const textureLoader = new THREE.TextureLoader().setPath("/assets/textures/");
 
   const textTexture = textureLoader.load("holographic.jpeg");
 
