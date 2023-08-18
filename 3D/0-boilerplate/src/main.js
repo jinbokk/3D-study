@@ -5,11 +5,10 @@ window.addEventListener("load", () => {
 });
 
 function init() {
+  /** Renderer */
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
   });
-
-  /** Renderer */
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
