@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 1000vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.wrapper {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  user-select: none;
+}
+
+.title {
+  margin: 0;
+  font-size: 3rem;
+  text-align: center;
+  font-family: "Amatic SC", cursive;
+}
