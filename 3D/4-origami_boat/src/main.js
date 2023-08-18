@@ -41,7 +41,7 @@ async function init() {
   /** Origami Boat */
   const gltfLoader = new GLTFLoader();
   const boatGltf = await gltfLoader.loadAsync(
-    "./models/origami_-_ships_and_boats/scene.gltf"
+    "/models/origami_-_ships_and_boats/scene.gltf"
   );
   const boatMesh = boatGltf.scene.getObjectByName("Plane010");
   boatMesh.traverse((object) => {
