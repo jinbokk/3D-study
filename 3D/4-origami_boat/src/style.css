@@ -1,7 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-  min-height: 1000vh;
 }
 
 * {
@@ -15,17 +14,15 @@ body {
 }
 
 .wrapper {
-  position: absolute;
-  top: 15%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
+  position: relative;
+  min-height: 500vh;
   user-select: none;
 }
 
 .title {
+  padding-top: 10rem;
   margin: 0;
-  font-size: 3rem;
   text-align: center;
+  font-size: 3rem;
   font-family: "Amatic SC", cursive;
 }
